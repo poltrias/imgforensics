@@ -1,106 +1,104 @@
 # imgforensics
 
-Eina de forense d'imatges tot-en-un per CTF i pentesting. No es limita a
-encadenar `exiftool`, `binwalk` i `steghide`: fa comprovacions pròpies de
-format i estructura de fitxer que cap eina individual dona per separat, i
-acaba amb un **veredicte agregat** perquè no calgui llegir 8 blocs de
-sortida per decidir si val la pena seguir investigant una imatge.
+All-in-one image forensics tool for CTF and pentesting. It doesn't just
+chain `exiftool`, `binwalk` and `steghide`: it adds its own file-format
+and container-structure checks that no single existing tool gives you
+on its own, and ends with an **aggregated verdict** so you don't have
+to read through 8 separate blocks of output to decide whether an
+image is worth investigating further.
 
-## Què comprova
+## What it checks
 
-**Nivell fitxer** (implementació pròpia, sense dependències externes)
-- Hashes MD5/SHA1/SHA256
-- Signatura màgica real vs. extensió declarada (detecta fitxers renombrats)
-- Dades sobrants després del marcador oficial de fi de fitxer (*trailing
-  data* — un dels trucs més clàssics de CTF)
-- Detecció de **polyglots**: un ZIP (o un altre format) vàlid annexat
-  dins la imatge, encara que el visor només vegi la part d'imatge
+**File level** (own implementation, no external dependencies)
+- MD5/SHA1/SHA256 hashes
+- Real magic signature vs. declared file extension (catches renamed files)
+- Trailing data after the official end-of-file marker (*trailing
+  data* — one of the most classic CTF tricks)
+- **Polyglot detection**: a valid ZIP (or other format) appended
+  inside the image, even if the viewer only ever sees the image part
 
-**Nivell format**
-- Parsing manual dels **chunks de PNG** — detecta chunks no estàndard i
-  mostra el contingut de `tEXt`/`zTXt`/`iTXt`, on sovint s'amaguen
-  missatges directament al contenidor
-- Metadades EXIF/XMP/IPTC (`exiftool`)
-- Fitxers/signatures incrustats (`binwalk`)
+**Format level**
+- Manual **PNG chunk** parsing — flags non-standard chunks and shows
+  the content of `tEXt`/`zTXt`/`iTXt` chunks, where messages are often
+  hidden directly in the container
+- EXIF/XMP/IPTC metadata (`exiftool`)
+- Embedded files/signatures (`binwalk`)
 
-**Nivell contingut**
-- Cadenes de text imprimibles interessants (flags, URLs, claus SSH...)
-- Codis QR / de barres incrustats (`pyzbar`, opcional)
-- **Heurística LSB pròpia**: biaix estadístic del bit menys significatiu
-  de cada canal de color, sense dependre de cap eina externa
-- **Extracció visual de bit-planes** (a l'estil Stegsolve): genera una
-  imatge per canal amb els 8 plans de bits en graella — un missatge LSB
-  que no altera prou la imatge per disparar l'heurística estadística
-  sovint **es veu a ull nu** com a soroll estructurat al pla 0
-- `zsteg` (LSB específic per PNG/BMP)
+**Content level**
+- Interesting printable strings (flags, URLs, SSH keys...)
+- Embedded QR codes / barcodes (`pyzbar`, optional)
+- **Custom LSB heuristic**: statistical bias of the least significant
+  bit of each color channel, with no external tool dependency
+- **Visual bit-plane extraction** (Stegsolve-style): generates one
+  image per channel with all 8 bit planes in a grid — a hidden LSB
+  message that doesn't skew the image enough to trip the statistical
+  heuristic is often **visible to the naked eye** as structured noise
+  on plane 0
+- `zsteg` (PNG/BMP-specific LSB analysis)
 
-**Esteganografia amb contrasenya**
-- `steghide` (JPEG/BMP/WAV/AU) — extracció amb contrasenya buida
-- `outguess` (JPEG) — extracció amb contrasenya buida
-- `stegseek` — força bruta de la contrasenya de steghide amb wordlist
+**Passphrase-based steganography**
+- `steghide` (JPEG/BMP/WAV/AU) — empty-passphrase extraction
+- `outguess` (JPEG) — empty-passphrase extraction
+- `stegseek` — steghide passphrase brute force with a wordlist
 
-Cada comprovació és independent: si no tens una eina instal·lada,
-l'eina t'ho avisa i continua amb la resta en lloc de petar.
+Every check is independent: if a tool isn't installed, it warns you
+and keeps going with the rest instead of crashing.
 
-## Per què no és només un wrapper
+## Why this isn't just a wrapper
 
-`exiftool`, `binwalk` i `steghide` fan una cosa cadascun. Aquesta eina
-afegeix la part que no fa cap d'ells sol:
+`exiftool`, `binwalk` and `steghide` each do one thing. This tool adds
+the part none of them does alone:
 
-- El parsing de chunks PNG i la detecció de polyglots són implementació
-  pròpia sobre l'estructura binària del format, no una crida a una altra
-  eina.
-- La detecció de *trailing data* i el mismatch de signatura màgica
-  cobreixen el cas — molt habitual en CTF — d'un fitxer renombrat o amb
-  dades annexades que `exiftool` i `binwalk` per si sols no sempre
-  deixen clar.
-- El **veredicte final** combina tots els senyals (mismatch, trailing
-  data, polyglot, chunks no estàndard, biaix LSB, QR trobat...) en un
-  sol nivell de sospita, en lloc de deixar-te interpretar 8 sortides
-  soltes.
+- PNG chunk parsing and polyglot detection are original implementations
+  working directly on the binary structure of the format, not calls to
+  another tool.
+- Trailing-data detection and the magic-signature mismatch check cover
+  a case — very common in CTF — that `exiftool` and `binwalk` alone
+  don't always make obvious: a renamed file, or one with data appended
+  after it.
+- The **final verdict** combines every signal (mismatch, trailing
+  data, polyglot, non-standard chunks, LSB bias, QR found...) into a
+  single suspicion level, instead of leaving you to interpret 8
+  separate outputs.
 
-## Instal·lació (Kali Linux)
+## Installation (Kali Linux)
 
 ```bash
-# Eines de sistema
+# System tools
 sudo apt update
 sudo apt install -y libimage-exiftool-perl binwalk steghide stegseek \
-    outguess ruby ruby-dev libzbar0
+    ruby ruby-dev libzbar0
 
-# zsteg (gem de Ruby)
+# zsteg (Ruby gem)
 sudo gem install zsteg
 
-# Dependències de Python
+# Python dependencies
 pip install -r requirements.txt --break-system-packages
 ```
 
-Si `stegseek` no està als repositoris, es pot compilar des de
-[github.com/RickdeJager/stegseek](https://github.com/RickdeJager/stegseek).
-
-## Ús
+`outguess` has been dropped from recent Kali/Debian repos. It's
+optional — the tool already skips it gracefully if it's missing. If
+you want it anyway, build it from source:
 
 ```bash
-# Analisi completa
-python3 imgforensics.py imatge.png
-
-# Amb extraccio de bit-planes visuals
-python3 imgforensics.py imatge.png -b
-
-# Amb forca bruta de steghide i informe JSON
-python3 imgforensics.py imatge.jpg -w /usr/share/wordlists/rockyou.txt -o informe.json
+git clone https://github.com/crorvick/outguess.git
+cd outguess && ./configure && make && sudo make install
 ```
 
-## Exemple de veredicte
+If `stegseek` isn't in your repos either, build it from
+[github.com/RickdeJager/stegseek](https://github.com/RickdeJager/stegseek).
 
+## Usage
+
+```bash
+# Full analysis
+python3 imgforensics.py image.png
+
+# With visual bit-plane extraction
+python3 imgforensics.py image.png -b
+
+# With steghide brute force and a JSON report
+python3 imgforensics.py image.jpg -w /usr/share/wordlists/rockyou.txt -o report.json
 ```
-=== VEREDICTE: ALTAMENT SOSPITOS ===
-    - 151 bytes sobrants despres del EOF oficial
-    - El fitxer tambe es un ZIP valid (polyglot)
-    - 1 chunks de text PNG amb contingut
-```
 
-## Per fer
-
-- [ ] Extracció automàtica dels fitxers que detecta `binwalk` (`-e`)
-- [ ] Mode `--batch` per analitzar un directori sencer
-- [ ] Suport per GIF animat (LSB distribuït entre frames)
+## Example verdict
