@@ -1,0 +1,149 @@
+{
+  "file": "../Downloads/unnamed.png",
+  "hashes": {
+    "md5": "2819bc501045645797701adc8ebaf71b",
+    "sha1": "2ea29d9464dfe74eab063a259066186da4d9a91c",
+    "sha256": "79e4e81b981414e94b2c6cd49bd46a0ff0e5239552cbacb3485d388e487f7a4e"
+  },
+  "magic": {
+    "declared_extension": "png",
+    "detected_format": "png",
+    "mismatch": false
+  },
+  "trailing": {
+    "found": false
+  },
+  "polyglot": {
+    "is_zip_polyglot": false
+  },
+  "png_chunks": [
+    {
+      "type": "IHDR",
+      "length": 13,
+      "standard": true
+    },
+    {
+      "type": "IDAT",
+      "length": 3636529,
+      "standard": true
+    },
+    {
+      "type": "IEND",
+      "length": 0,
+      "standard": true
+    }
+  ],
+  "metadata": {
+    "ExifToolVersion": 13.55,
+    "FileName": "unnamed.png",
+    "Directory": "../Downloads",
+    "FileSize": "3.6 MB",
+    "FileModifyDate": "2026:09:27 21:41:14+02:00",
+    "FileAccessDate": "2026:09:27 21:41:54+02:00",
+    "FileInodeChangeDate": "2026:09:27 21:41:14+02:00",
+    "FilePermissions": "-rw-rw-r--",
+    "FileType": "PNG",
+    "FileTypeExtension": "png",
+    "MIMEType": "image/png",
+    "ImageWidth": 1920,
+    "ImageHeight": 1080,
+    "BitDepth": 8,
+    "ColorType": "RGB",
+    "Compression": "Deflate/Inflate",
+    "Filter": "Adaptive",
+    "Interlace": "Noninterlaced",
+    "ImageSize": "1920x1080",
+    "Megapixels": 2.1
+  },
+  "embedded": [
+    "0             0x0             PNG image, 1920 x 1080, 8-bit/color RGB, non-interlaced",
+    "41            0x29            Zlib compressed data, best compression"
+  ],
+  "strings": [
+    "7}1IDATx",
+    "^yxoP#",
+    "fuQuMN",
+    "lg9>T-'s",
+    "lqC9_`\\#aw",
+    "{)}gun",
+    "w`8s[ ",
+    "{@q0qu",
+    "mQvX:_",
+    "L=-WIX",
+    "ng<Gu:",
+    "{81Dl1",
+    "iz)>1B]",
+    "t~|k19B",
+    "NNg2S\"",
+    "wmm7K^;J",
+    "LBv%>KO",
+    " nmq4h-,7Y_",
+    "Vo'Ig2",
+    ".qk8#N^",
+    "VTEn9C",
+    ":1H4XYA",
+    "s-}W+g",
+    "m_8<zHM",
+    "\\tp)@Mm",
+    "cDZ?:.",
+    "C^4P)d>+",
+    "CJ/7E|75",
+    "K[ n}F",
+    "7bTbYm7",
+    "I2}mVa",
+    "!\\Q#8d",
+    "vUx,Lq",
+    "\"jtl[JN",
+    "Z+Bo^a",
+    "[j /n+",
+    "!rbPZQK",
+    "#Ro$]g",
+    "Hbx(c'z",
+    "(Hkz|o4"
+  ],
+  "qr": [],
+  "lsb_bias": {
+    "channel_R_ratio_1s": 0.4915,
+    "channel_G_ratio_1s": 0.4705,
+    "channel_B_ratio_1s": 0.4534,
+    "suspicious": false
+  },
+  "zsteg": [
+    "imagedata           .. text: \">5-56'!\\r\"",
+    "b1,r,lsb,xy         .. ",
+    "b1,r,msb,xy         .. ",
+    "b1,g,lsb,xy         .. text: \"?'R?S,\\\"bD\"",
+    "b1,g,msb,xy         .. ",
+    "b1,b,lsb,xy         .. ",
+    "b1,b,msb,xy         .. ",
+    "b1,rgb,lsb,xy       .. ",
+    "b1,rgb,msb,xy       .. ",
+    "b1,bgr,lsb,xy       .. ",
+    "b1,bgr,msb,xy       .. ",
+    "b2,r,lsb,xy         .. ",
+    "b2,r,msb,xy         .. text: \"_]]UUUUUUyWVi\"",
+    "b2,g,lsb,xy         .. ",
+    "b2,g,msb,xy         .. text: \"G+B5uvys \"",
+    "b2,b,lsb,xy         .. ",
+    "b2,b,msb,xy         .. ",
+    "b2,rgb,lsb,xy       .. ",
+    "b2,rgb,msb,xy       .. ",
+    "b2,bgr,lsb,xy       .. ",
+    "b2,bgr,msb,xy       .. ",
+    "b3,r,lsb,xy         .. ",
+    "b3,r,msb,xy         .. text: \"0i\\\\AH$cJ\"",
+    "b3,g,lsb,xy         .. ",
+    "b3,g,msb,xy         .. ",
+    "b3,b,lsb,xy         .. ",
+    "b3,b,msb,xy         .. ",
+    "b3,rgb,lsb,xy       .. ",
+    "b3,rgb,msb,xy       .. ",
+    "b3,bgr,lsb,xy       .. "
+  ],
+  "steghide_empty": null,
+  "outguess": null,
+  "verdict": {
+    "level": "NO INDICATORS",
+    "signals": []
+  }
+}
